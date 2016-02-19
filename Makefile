@@ -168,8 +168,14 @@ tests: $(TESTBINARIES)
 bin/echo_server: bin/echo_server.o bin/libfiber.so
 	$(CC) $(LDFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGSAFTER)
 
+bin/ctx_switch: bin/ctx_switch.o bin/libfiber.so
+	$(CC) $(LDFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGSAFTER)
+
 runtests: tests
 	for cur in $(TESTS); do echo $$cur; LD_LIBRARY_PATH=..:$$LD_LIBRARY_PATH time ./bin/$$cur > /dev/null; if [ "$$?" -ne "0" ] ; then echo "ERROR $$cur - failed!"; fi; done
+
+runctx: bin/ctx_switch
+	LD_LIBRARY_PATH=..:$$LD_LIBRARY_PATH ./$< 
 
 bin/test_%.o: test_%.c $(INCLUDES) $(TESTINCLUDES)
 	$(CC) -Werror $(CFLAGS) -Isrc -c $< -o $@
