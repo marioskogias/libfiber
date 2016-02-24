@@ -171,6 +171,9 @@ bin/echo_server: bin/echo_server.o bin/libfiber.so
 bin/ctx_switch: bin/ctx_switch.o bin/libfiber.so
 	$(CC) $(LDFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGSAFTER)
 
+bin/start_stop: bin/start_stop.o bin/libfiber.so
+	$(CC) $(LDFLAGS) $(CFLAGS) $^ -o $@ $(LDFLAGSAFTER)
+
 runtests: tests
 	for cur in $(TESTS); do echo $$cur; LD_LIBRARY_PATH=..:$$LD_LIBRARY_PATH time ./bin/$$cur > /dev/null; if [ "$$?" -ne "0" ] ; then echo "ERROR $$cur - failed!"; fi; done
 
